@@ -8,6 +8,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// Like struct
 type Like struct {
 	ID        uint64    `gorm:"primary_key;auto_increment" json:"id"`
 	UserID    uint32    `gorm:"not null" json:"user_id"`
