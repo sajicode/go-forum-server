@@ -16,7 +16,7 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 			errList["unauthorized"] = "Unauthorized"
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"status": http.StatusUnauthorized,
-				"error": errList
+				"error":  errList,
 			})
 			c.Abort()
 			return

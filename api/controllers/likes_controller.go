@@ -184,3 +184,4 @@ func (server *Server) UnLikePost(c *gin.Context) {
 		"status":   http.StatusOK,
 		"response": "Like deleted",
 	})
+}

@@ -1,37 +1,30 @@
 package controllers
 
 import (
-	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
-	"os"
 	"strconv"
-	"strings"
 
-	"github.com/joho/godotenv"
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sajicode/go-forum-server/auth"
-	"github.com/sajicode/go-forum-server/models"
-	"github.com/sajicode/go-forum-server/security"
-	"github.com/sajicode/go-forum-server/utils/fileformat"
-	"github.com/sajicode/go-forum-server/utils/formaterror"
+	"github.com/sajicode/go-forum-server/api/auth"
+	"github.com/sajicode/go-forum-server/api/models"
+	"github.com/sajicode/go-forum-server/api/security"
+	"github.com/sajicode/go-forum-server/api/utils/formaterror"
 )
 
 // CreateUser controller
 func (server *Server) CreateUser(c *gin.Context) {
 	errList = map[string]string{}
 
-	body, err :- ioutil.ReadAll(c.Request.Body)
+	body, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {
 		errList["Invalid_body"] = "Unable to get request"
 		c.JSON(http.StatusUnprocessableEntity, gin.H{
 			"status": http.StatusUnprocessableEntity,
-			"error": errList,
+			"error":  errList,
 		})
 		return
 	}
@@ -43,7 +36,7 @@ func (server *Server) CreateUser(c *gin.Context) {
 		errList["Unmarshal_error"] = "Cannot unmarshal body"
 		c.JSON(http.StatusUnprocessableEntity, gin.H{
 			"status": http.StatusUnprocessableEntity,
-			"error": errList,
+			"error":  errList,
 		})
 		return
 	}
@@ -53,7 +46,7 @@ func (server *Server) CreateUser(c *gin.Context) {
 		errList = errorMessages
 		c.JSON(http.StatusUnprocessableEntity, gin.H{
 			"status": http.StatusUnprocessableEntity,
-			"error": errList,
+			"error":  errList,
 		})
 		return
 	}
@@ -63,15 +56,15 @@ func (server *Server) CreateUser(c *gin.Context) {
 		errList = formattedError
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"status": http.StatusInternalServerError,
-			"error": errList,
+			"error":  errList,
 		})
 		return
 	}
 	c.JSON(http.StatusCreated, gin.H{
-			"status": http.StatusCreated,
-			"response": userCreated,
-		})
-		return
+		"status":   http.StatusCreated,
+		"response": userCreated,
+	})
+	return
 }
 
 func (server *Server) GetUsers(c *gin.Context) {
@@ -128,7 +121,6 @@ func (server *Server) GetUser(c *gin.Context) {
 		"response": userGotten,
 	})
 }
-
 
 func (server *Server) UpdateUser(c *gin.Context) {
 

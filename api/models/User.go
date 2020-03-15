@@ -3,6 +3,7 @@ package models
 import (
 	"errors"
 	"html"
+	"log"
 	"os"
 	"strings"
 	"time"
@@ -10,6 +11,7 @@ import (
 	"github.com/sajicode/go-forum-server/api/security"
 
 	"github.com/badoux/checkmail"
+	"github.com/jinzhu/gorm"
 )
 
 // User struct
@@ -175,30 +177,30 @@ func (u *User) UpdateAUser(db *gorm.DB, uid uint32) (*User, error) {
 
 		db = db.Debug().Model(&User{}).Where("id = ?", uid).Take(&User{}).UpdateColumns(
 			map[string]interface{}{
-				"password": u.Password,
-				"email": u.Email,
-				"updated_at": time.Now()
-			}
+				"password":   u.Password,
+				"email":      u.Email,
+				"updated_at": time.Now(),
+			},
 		)
 	}
-	
+
 	db = db.Debug().Model(&User{}).Where("id = ?", uid).Take(&User{}).UpdateColumns(
-			map[string]interface{}{
-				"email": u.Email,
-				"updated_at": time.Now()
-			}
-		)
+		map[string]interface{}{
+			"email":      u.Email,
+			"updated_at": time.Now(),
+		},
+	)
 
-		if db.Error != nil {
-			return &User{}, db.Error
-		}
+	if db.Error != nil {
+		return &User{}, db.Error
+	}
 
-		//* return the updated user
-		err := db.Debug().Model(&User{}).Where("id = ?", uid).Take(&u).Error
-		if err != nil {
-			return &User{}, err
-		}
-		return u, nil
+	//* return the updated user
+	err := db.Debug().Model(&User{}).Where("id = ?", uid).Take(&u).Error
+	if err != nil {
+		return &User{}, err
+	}
+	return u, nil
 }
 
 // DeleteAUser - function to delete a user

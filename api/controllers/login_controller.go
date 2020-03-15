@@ -89,4 +89,5 @@ func (server *Server) SignIn(email, password string) (map[string]interface{}, er
 	userData["avatar_path"] = user.AvatarPath
 	userData["username"] = user.Username
 
-	retusajicode/go-forum-server
+	return userData, nil
+}
